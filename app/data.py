@@ -2,6 +2,7 @@ import yfinance as yf
 import httpx
 import os
 from dotenv import load_dotenv
+from fastapi import HTTPException
 
 load_dotenv()
 COINGECKO_URL = os.getenv("COINGECKO_API_URL")
@@ -9,6 +10,10 @@ COINGECKO_URL = os.getenv("COINGECKO_API_URL")
 async def get_stock(ticker: str):
     stock = yf.Ticker(ticker)
     hist = stock.history(period="1mo")
+
+    if hist.empty:
+        raise HTTPException(status_code=404, detail=f"No data found for ticker '{ticker}'. Check it's a valid symbol.")
+
     return {
         "ticker": ticker,
         "current_price": round(hist["Close"].iloc[-1], 2),

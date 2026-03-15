@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Finance Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="noise"></div>
+
+    <header>
+        <div class="header-inner">
+            <span class="logo">&#9698; FINBOARD</span>
+            <span class="header-date" id="live-date"></span>
+        </div>
+    </header>
+
+    <main>
+        <section class="card" id="stock-card">
+            <div class="card-label">EQUITIES</div>
+            <h2>Stock Tracker</h2>
+            <div class="input-row">
+                <input id="stock-input" type="text" placeholder="Ticker — e.g. AAPL" />
+                <button onclick="loadStock()">FETCH</button>
+            </div>
+            <div class="price-display" id="stock-price">—</div>
+            <div class="chart-wrap">
+                <canvas id="stock-chart"></canvas>
+            </div>
+        </section>
+
+        <section class="card" id="crypto-card">
+            <div class="card-label">CRYPTO</div>
+            <h2>Crypto Tracker</h2>
+            <div class="input-row">
+                <input id="crypto-input" type="text" placeholder="Coin ID — e.g. bitcoin" />
+                <button onclick="loadCrypto()">FETCH</button>
+            </div>
+            <div class="price-display" id="crypto-price">—</div>
+            <div class="chart-wrap">
+                <canvas id="crypto-chart"></canvas>
+            </div>
+        </section>
+    </main>
+
+    <script src="/static/js/dashboard.js"></script>
+    <script>
+        document.getElementById("live-date").textContent =
+            new Date().toLocaleDateString("en-US", { weekday: "short", year: "numeric", month: "short", day: "numeric" });
+    </script>
+</body>
+</html>
