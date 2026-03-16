@@ -1,36 +1,139 @@
 let stockChart, cryptoChart;
 
-async function loadStock() {
-    const ticker = document.getElementById("stock-input").value.trim();
-    const res = await fetch(`/api/stock/${ticker}`);
-    const data = await res.json();
+async function loadStock(period = "1mo") {
+    const inputElement = document.getElementById("stock-input");
+    const priceElement = document.getElementById("stock-price");
+    const ticker = inputElement.value.trim().toUpperCase();
 
-    document.getElementById("stock-price").textContent = `Current Price: $${data.current_price}`;
-    renderChart("stock-chart", data.history, `${ticker} (1 Month)`, stockChart, c => stockChart = c);
+    if (!ticker) return;
+
+    priceElement.textContent = "Loading...";
+
+    try {
+        const res = await fetch(`/api/stock/${ticker}?period=${period}`);
+        const stockData = await res.json(); 
+
+        if (!res.ok) throw new Error(stockData.detail || "Failed to fetch data");
+
+        priceElement.textContent = `$${stockData.current_price.toLocaleString()}`;
+
+        renderChart(
+            "stock-chart", 
+            stockData.history, 
+            `${ticker} (${period})`, 
+            stockChart, 
+            c => stockChart = c
+        );
+    } catch (err) {
+        console.error("Stock Load Error:", err);
+        priceElement.textContent = "Symbol not found";
+    }
 }
 
-async function loadCrypto() {
-    const coin = document.getElementById("crypto-input").value.trim();
-    const res = await fetch(`/api/crypto/${coin}`);
-    const data = await res.json();
+async function loadCrypto(period = "30") {
+    const inputElement = document.getElementById("crypto-input");
+    const priceElement = document.getElementById("crypto-price");
+    const coin = inputElement.value.trim().toLowerCase();
+    
+    if (!coin) return;
 
-    document.getElementById("crypto-price").textContent = `Current Price: $${data.current_price}`;
-    renderChart("crypto-chart", data.history, `${coin} (30 Days)`, cryptoChart, c => cryptoChart = c);
+    priceElement.textContent = "Loading...";
+
+    try {
+        const res = await fetch(`/api/crypto/${coin}?period=${period}`);
+        const cryptoData = await res.json();
+
+        if (!res.ok) throw new Error(cryptoData.detail || "Coin not found");
+
+        const price = cryptoData.current_price;
+        const displayPrice = price < 1 ? price.toFixed(6) : price.toLocaleString();
+        priceElement.textContent = `$${displayPrice}`;
+
+        renderChart(
+            "crypto-chart", 
+            cryptoData.history, 
+            `${coin.toUpperCase()} (${period} Days)`, 
+            cryptoChart, 
+            c => cryptoChart = c
+        );
+        
+    } catch (err) {
+        console.error("Crypto Load Error:", err);
+        priceElement.textContent = "Invalid Coin";
+    }
 }
 
 function renderChart(canvasId, history, label, existingChart, setChart) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas || !history) return;
+
     const labels = history.map(p => p.date);
     const prices = history.map(p => p.close);
 
-    if (existingChart) existingChart.destroy();
+    if (existingChart) {
+        existingChart.destroy();
+    }
 
-    const ctx = document.getElementById(canvasId).getContext("2d");
-    setChart(new Chart(ctx, {
+    const ctx = canvas.getContext("2d");
+    canvas.style.height = '300px';
+
+    const newChart = new Chart(ctx, {
         type: "line",
         data: {
             labels,
-            datasets: [{ label, data: prices, borderColor: "#4f8ef7", fill: false }]
+            datasets: [{ 
+                label, 
+                data: prices, 
+                borderColor: "#0dcaf0", 
+                backgroundColor: "rgba(13, 202, 240, 0.1)", 
+                fill: true,
+                tension: 0.3 
+            }]
         },
-        options: { responsive: true }
-    }));
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    grid: { color: '#333' },
+                    ticks: {
+                        color: '#888',
+                        maxRotation: 0,
+                        autoSkip: true,
+                        maxTicksLimit: 8,
+                        callback: function(val, index) {
+                            const dateStr = this.getLabelForValue(val);
+                            const date = !isNaN(dateStr) 
+                                ? new Date(parseInt(dateStr) * 1000) 
+                                : new Date(dateStr);
+
+                            return date.toLocaleDateString('en-US', { 
+                                month: 'short', 
+                                day: 'numeric' 
+                            });
+                        }
+                    }
+                },
+                y: {
+                    grid: { color: '#333' },
+                    ticks: { color: '#888' }
+                }
+            },
+            plugins: {
+                legend: { labels: { color: '#fff' } }
+            }
+        }
+    });
+    
+    setChart(newChart);
+}
+
+const dateEl = document.getElementById("live-date");
+if(dateEl) {
+    dateEl.textContent = new Date().toLocaleDateString("en-US", { 
+        weekday: "short", 
+        year: "numeric", 
+        month: "short", 
+        day: "numeric" 
+    });
 }

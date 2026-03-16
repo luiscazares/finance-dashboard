@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Finance Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body>
     <div class="noise"></div>
@@ -26,9 +27,20 @@
                 <input id="stock-input" type="text" placeholder="Ticker — e.g. AAPL" />
                 <button onclick="loadStock()">FETCH</button>
             </div>
+            
             <div class="price-display" id="stock-price">—</div>
+            <div class="status-msg" id="stock-status"></div>
+            
             <div class="chart-wrap">
                 <canvas id="stock-chart"></canvas>
+            </div>
+
+            <div class="range-buttons">
+                <button class="btn-sm" onclick="loadStock('1d')">1D</button>
+                <button class="btn-sm" onclick="loadStock('5d')">5D</button>
+                <button class="btn-sm" onclick="loadStock('1mo')">1M</button>
+                <button class="btn-sm" onclick="loadStock('1y')">1Y</button>
+                <button class="btn-sm" onclick="loadStock('max')">MAX</button>
             </div>
         </section>
 
@@ -39,17 +51,22 @@
                 <input id="crypto-input" type="text" placeholder="Coin ID — e.g. bitcoin" />
                 <button onclick="loadCrypto()">FETCH</button>
             </div>
+            
             <div class="price-display" id="crypto-price">—</div>
+            
             <div class="chart-wrap">
                 <canvas id="crypto-chart"></canvas>
+            </div>
+
+            <div class="range-buttons">
+                <button class="btn-sm" onclick="loadCrypto('1')">1D</button>
+                <button class="btn-sm" onclick="loadCrypto('7')">7D</button>
+                <button class="btn-sm" onclick="loadCrypto('30')">1M</button>
+                <button class="btn-sm" onclick="loadCrypto('365')">1Y</button>
             </div>
         </section>
     </main>
 
-    <script src="/static/js/dashboard.js"></script>
-    <script>
-        document.getElementById("live-date").textContent =
-            new Date().toLocaleDateString("en-US", { weekday: "short", year: "numeric", month: "short", day: "numeric" });
-    </script>
+    <script src="/static/js/dashboard.js" defer></script>
 </body>
 </html>

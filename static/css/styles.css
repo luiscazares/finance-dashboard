@@ -1,44 +1,33 @@
 :root {
-    --bg: #0a0a0f;
-    --surface: #111118;
-    --border: #1e1e2e;
-    --accent: #c8f04a;
-    --accent-dim: #8aab1f;
-    --text: #e8e8f0;
-    --muted: #555570;
-    --font-display: 'Syne', sans-serif;
-    --font-mono: 'DM Mono', monospace;
+    --bg-dark: #0a0a0a;
+    --card-bg: rgba(20, 20, 20, 0.6);
+    --border-color: #333;
+    --accent-blue: #0dcaf0;
+    --text-muted: #888;
+    --font-mono: 'JetBrains Mono', 'DM Mono', monospace;
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-mono);
-    min-height: 100vh;
+    background-color: var(--bg-dark);
+    color: white;
+    font-family: 'Syne', sans-serif;
+    margin: 0;
     overflow-x: hidden;
 }
 
-/* Noise texture overlay */
+/* Background Noise/Grain Effect */
 .noise {
     position: fixed;
-    inset: 0;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: url('https://grainy-gradients.vercel.app/noise.svg');
+    opacity: 0.05;
     pointer-events: none;
-    z-index: 100;
-    opacity: 0.03;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    z-index: 9999;
 }
 
-/* Header */
 header {
-    border-bottom: 1px solid var(--border);
-    padding: 1.2rem 2.5rem;
-    position: sticky;
-    top: 0;
-    background: rgba(10,10,15,0.85);
-    backdrop-filter: blur(12px);
-    z-index: 10;
+    padding: 2rem;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .header-inner {
@@ -50,146 +39,100 @@ header {
 }
 
 .logo {
-    font-family: var(--font-display);
-    font-size: 1.1rem;
+    letter-spacing: 4px;
     font-weight: 800;
-    letter-spacing: 0.1em;
-    color: var(--accent);
 }
 
-.header-date {
-    font-size: 0.75rem;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-}
-
-/* Main layout */
 main {
-    max-width: 1200px;
-    margin: 3rem auto;
-    padding: 0 2.5rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
+    display: flex; /* Switch to flexbox for easy vertical stacking */
+    flex-direction: column;
+    gap: 3rem; /* Spacing between the Stock and Crypto cards */
+    padding: 3rem;
+    max-width: 1000px; /* Limits width so it doesn't look stretched on ultrawide monitors */
+    margin: 0 auto;
 }
 
-@media (max-width: 800px) {
-    main { grid-template-columns: 1fr; }
-}
-
-/* Cards */
 .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 2rem;
-    position: relative;
-    overflow: hidden;
-    animation: fadeUp 0.5s ease both;
+    width: 100%; /* Ensures card takes full width of the main container */
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    padding: 2.5rem;
+    backdrop-filter: blur(10px);
 }
 
-.card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent), transparent);
-}
-
-#crypto-card::before {
-    background: linear-gradient(90deg, #4af0c8, transparent);
-}
-
-#crypto-card .card-label,
-#crypto-card button,
-#crypto-card .price-display {
-    --accent: #4af0c8;
-    --accent-dim: #1fab88;
+.card:hover {
+    border-color: var(--accent-blue);
+    transform: translateY(-5px);
 }
 
 .card-label {
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    color: var(--accent);
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
+    font-family: var(--font-mono);
+    color: var(--accent-blue);
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    margin-bottom: 1rem;
 }
 
-.card h2 {
-    font-family: var(--font-display);
-    font-size: 1.4rem;
-    font-weight: 700;
+h2 {
+    font-weight: 600;
     margin-bottom: 1.5rem;
-    color: var(--text);
+    letter-spacing: -1px;
 }
 
-/* Input row */
 .input-row {
     display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1.25rem;
+    gap: 10px;
+    margin-bottom: 2rem;
 }
 
 input {
-    flex: 1;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    color: var(--text);
+    background: #000;
+    border: 1px solid var(--border-color);
+    color: white;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    flex-grow: 1;
     font-family: var(--font-mono);
-    font-size: 0.85rem;
-    padding: 0.65rem 1rem;
-    outline: none;
-    transition: border-color 0.2s;
-}
-
-input:focus {
-    border-color: var(--accent);
-}
-
-input::placeholder {
-    color: var(--muted);
 }
 
 button {
-    background: var(--accent);
-    color: #0a0a0f;
-    border: none;
-    border-radius: 3px;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    padding: 0.65rem 1.2rem;
+    background: transparent;
+    border: 1px solid var(--accent-blue);
+    color: var(--accent-blue);
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
     cursor: pointer;
-    transition: opacity 0.2s, transform 0.1s;
+    font-family: var(--font-mono);
+    font-weight: bold;
+    transition: 0.3s;
 }
 
-button:hover { opacity: 0.85; }
-button:active { transform: scale(0.97); }
+button:hover {
+    background: var(--accent-blue);
+    color: #000;
+}
 
-/* Price display */
 .price-display {
-    font-family: var(--font-display);
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--accent);
-    margin-bottom: 1.5rem;
-    letter-spacing: -0.02em;
-    min-height: 2.5rem;
+    font-family: var(--font-mono);
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
 }
 
-/* Chart */
+.chart-wrap {
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    padding: 1rem;
+}
+
 .chart-wrap {
     position: relative;
-    height: 200px;
+    height: 450px; /* Increased from 300px to make the graph feel "big" */
+    width: 100%;
+    margin-top: 20px;
 }
 
-/* Animation */
-@keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
+canvas {
+    width: 100% !important;
+    height: 100% !important;
 }
-
-#crypto-card { animation-delay: 0.1s; }
