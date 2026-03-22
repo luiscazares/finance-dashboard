@@ -26,7 +26,7 @@ async function loadStock(period = "1mo") {
         );
     } catch (err) {
         console.error("Stock Load Error:", err);
-        priceElement.textContent = "Symbol not found";
+        priceElement.textContent = err.message || "Symbol not found";
     }
 }
 
@@ -46,6 +46,8 @@ async function loadCrypto(period = "30") {
         if (!res.ok) throw new Error(cryptoData.detail || "Coin not found");
 
         const price = cryptoData.current_price;
+        if (price == null) throw new Error("No price data available for this coin");
+        
         const displayPrice = price < 1 ? price.toFixed(6) : price.toLocaleString();
         priceElement.textContent = `$${displayPrice}`;
 
@@ -59,7 +61,11 @@ async function loadCrypto(period = "30") {
         
     } catch (err) {
         console.error("Crypto Load Error:", err);
-        priceElement.textContent = "Invalid Coin";
+        priceElement.textContent = err.message || "Invalid coin";
+        if (cryptoChart) {
+            cryptoChart.destroy();
+            cryptoChart = null;
+        }
     }
 }
 

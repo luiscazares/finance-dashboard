@@ -136,3 +136,37 @@ canvas {
     width: 100% !important;
     height: 100% !important;
 }
+
+/* Button Loading States */
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+button:disabled:hover {
+    background: transparent;
+    color: var(--accent-blue);
+}
+
+/* Loading Spinner Animation */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+button.loading {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+button.loading:hover {
+    background: transparent;
+    color: var(--accent-blue);
+}
+
+button.loading::before {
+    content: '⟳ ';
+    display: inline;
+    animation: spin 0.8s linear infinite;
+}
