@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -5,12 +6,17 @@ from fastapi.requests import Request
 from fastapi.middleware.cors import CORSMiddleware
 from app.data import get_stock, get_crypto
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR = os.path.dirname(BASE_DIR)
+
 app = FastAPI()
-app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
+
+app.mount("/static", StaticFiles(directory=os.path.join(ROOT_DIR, "static")), name="static")
+templates = Jinja2Templates(directory=os.path.join(ROOT_DIR, "templates"))
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # For production, change to ["https://finance.luiscazares.com"]
+    allow_origins=["https://finance.luiscazares.com"], 
     allow_methods=["*"],
     allow_headers=["*"],
 )

@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="/static/js/dashboard.js"></script>
 </head>
 <body>
     <div class="noise"></div>
@@ -21,8 +22,8 @@
 
     <main>
         <div class="toggle-container">
-            <button class="toggle-btn active" onclick="switchView('stock')" id="toggle-stock">EQUITIES</button>
-            <button class="toggle-btn" onclick="switchView('crypto')" id="toggle-crypto">CRYPTO</button>
+            <button class="toggle-btn active" id="toggle-stock">EQUITIES</button>
+            <button class="toggle-btn" id="toggle-crypto">CRYPTO</button>
         </div>
 
         <section class="card active-view" id="stock-card">
@@ -34,7 +35,6 @@
             </div>
             
             <div class="price-display" id="stock-price">—</div>
-            <div class="status-msg" id="stock-status"></div>
             
             <div class="chart-wrap">
                 <canvas id="stock-chart"></canvas>
@@ -71,7 +71,5 @@
             </div>
         </section>
     </main>
-
-    <script src="/static/js/dashboard.js" defer></script>
 </body>
 </html>

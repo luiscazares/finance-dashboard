@@ -163,3 +163,6 @@ function switchView(view) {
         toggleStock.classList.remove("active");
     }
 }
+
+document.getElementById("toggle-stock").addEventListener("click", () => switchView("stock"));
+document.getElementById("toggle-crypto").addEventListener("click", () => switchView("crypto"));
