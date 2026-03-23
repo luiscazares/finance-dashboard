@@ -20,7 +20,12 @@
     </header>
 
     <main>
-        <section class="card" id="stock-card">
+        <div class="toggle-container">
+            <button class="toggle-btn active" onclick="switchView('stock')" id="toggle-stock">EQUITIES</button>
+            <button class="toggle-btn" onclick="switchView('crypto')" id="toggle-crypto">CRYPTO</button>
+        </div>
+
+        <section class="card active-view" id="stock-card">
             <div class="card-label">EQUITIES</div>
             <h2>Stock Tracker</h2>
             <div class="input-row">

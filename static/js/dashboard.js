@@ -143,3 +143,23 @@ if(dateEl) {
         day: "numeric" 
     });
 }
+
+function switchView(view) {
+    // Update card visibility
+    const stockCard = document.getElementById("stock-card");
+    const cryptoCard = document.getElementById("crypto-card");
+    const toggleStock = document.getElementById("toggle-stock");
+    const toggleCrypto = document.getElementById("toggle-crypto");
+    
+    if (view === "stock") {
+        stockCard.classList.add("active-view");
+        cryptoCard.classList.remove("active-view");
+        toggleStock.classList.add("active");
+        toggleCrypto.classList.remove("active");
+    } else if (view === "crypto") {
+        cryptoCard.classList.add("active-view");
+        stockCard.classList.remove("active-view");
+        toggleCrypto.classList.add("active");
+        toggleStock.classList.remove("active");
+    }
+}

@@ -136,7 +136,6 @@ canvas {
     width: 100% !important;
     height: 100% !important;
 }
-
 /* Button Loading States */
 button:disabled {
     opacity: 0.6;
@@ -169,4 +168,50 @@ button.loading::before {
     content: '⟳ ';
     display: inline;
     animation: spin 0.8s linear infinite;
+}
+
+/* Toggle Container */
+.toggle-container {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+    padding: 0 3rem;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.toggle-btn {
+    background: transparent;
+    border: 2px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 0.8rem 2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-weight: bold;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    transition: 0.3s;
+}
+
+.toggle-btn:hover {
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+}
+
+.toggle-btn.active {
+    background: var(--accent-blue);
+    color: #000;
+    border-color: var(--accent-blue);
+}
+
+/* View visibility */
+.card {
+    display: none;
+}
+
+.card.active-view {
+    display: block;
 }
